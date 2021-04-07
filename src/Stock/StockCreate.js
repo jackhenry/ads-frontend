@@ -15,13 +15,20 @@ const DrugSelectInput = (props) => {
         }
         fetchDrugs().then(json => {
             console.log(json);
-            const newChoices = json.map(obj => ({ id: obj['id'], name: obj['drugName']}));
+            const newChoices = json.map(obj => {
+                console.log(obj);
+                const { id, drugName, concentration } = obj;
+                return {
+                    id: id,
+                    name: `id: ${id}: ${drugName} (${concentration})`
+                }
+            });
             setChoices(newChoices)
         });
     }, [])
 
     return (
-        <SelectInput choices={choices} optionText="name" source="drug_id"/>
+        <SelectInput choices={choices} optionText="name" source="id"/>
     )
 }
 

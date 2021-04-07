@@ -12,6 +12,8 @@ import { DrugCreate } from './Drug/DrugCreate';
 import { StockList } from './Stock/StockList';
 import { StockCreate } from './Stock/StockCreate';
 import { StockEdit } from './Stock/StockEdit';
+import { MedicationOrderList } from './MedicationOrder/MedicationOrderList';
+import { MedicationOrderCreate } from './MedicationOrder/MedicationOrderCreate';
 
 const dataProvider = jsonServerProvider('http://localhost:8080/ads/api');
 
@@ -21,6 +23,7 @@ const App = () => (
     <Resource name="patient" list={PatientList} create={PatientCreate} edit={PatientEdit} />
     <Resource name="drug" list={DrugList} create={DrugCreate} />
     <Resource name="stock" list={StockList} create={StockCreate} edit={StockEdit} options={{ label: 'StockItem', }} />
+    <Resource name="mo" list={MedicationOrderList} create={MedicationOrderCreate} options={{ label: 'Prescription'}} />
   </Admin>
 )
 

@@ -1,31 +1,64 @@
-import { Button } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import {
-  DateField, DateInput, Edit, SimpleForm, TextInput, TopToolbar,
+  DateField, Edit, SimpleForm, TextInput, TopToolbar,
 } from 'ra-ui-materialui';
+import { showNotification } from 'react-admin';
 import * as React from 'react';
 
-const sendDischargeRequest = async id => {
-  fetch(`http://localhost:8080/ads/api/patient/${id}/discharge`, {
-    method: 'PUT'
-  })
-  .then(response => console.log("success"))
-  .catch(err => console.log(err));
-}
+
 
 const PatientEditActions = (props) => { 
-  console.log(props);
+   
+  if (props === null || !props.data) {
+    return <TopToolbar />
+  }
+
   const { data: { id } } = props;
+  const { onDischarge } = props;
 
   return (
     <TopToolbar>
-      <Button variant="contained" color="primary" onClick={() => sendDischargeRequest(id)}>Discharge</Button>
+      <Button variant="contained" color="primary" onClick={() => onDischarge(id)}>Discharge</Button>
     </TopToolbar>
   );
 }
+
+const redirect = (basePath, id, data) => `/patient/${id}/show`;
+
 export const PatientEdit = (props) => {
+  
+  const [isDischarged, setIsDischarged] = React.useState(false);
+  
+  const sendDischargeRequest = async id => {
+    fetch(`http://localhost:8080/ads/api/patient/${id}/discharge`, {
+      method: 'PUT'
+    })
+    .then(response => {
+      setIsDischarged(true);
+    })
+    .catch(err => console.log(err));
+  }
+  
+  if (isDischarged) {
+    console.log(props);
+    return (
+      <Dialog open={true}>
+        <DialogTitle>Successful Discharge</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            The patient was successfully discharged.
+          </DialogContentText>
+          <DialogActions>
+            <Button onClick={() => window.location.href="/#/patient"}>OK</Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
   return (
-    <Edit actions={<PatientEditActions />} {...props}>
-      <SimpleForm>
+    <Edit actions={<PatientEditActions onDischarge={sendDischargeRequest} />} {...props}>
+      <SimpleForm redirect={redirect}>
         <TextInput disabled source="id" />
         <TextInput source="firstname" />
         <TextInput source="lastname" />

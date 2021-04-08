@@ -14,12 +14,40 @@ const deleteMedicationOrder = async (id) => {
     return await response.json();
 }
 
+const getDrugStock = async (drugId) => {
+    const response = await fetch(`http://localhost:8080/ads/api/stock`);
+    return await response.json();
+}
+
 const FillOrderButton = ({ record }) => {
-    const { id } = record;
+    const { id, drugId, quantity } = record;
+   
+    const [drugStock, setDrugStock] = React.useState(null);
+    React.useEffect(() => {
+        if (drugId) {
+            getDrugStock(drugId).then(json => {
+                const drugStock = json.filter(obj => obj.drugId === drugId);
+                if (drugStock.length > 0) {
+                    setDrugStock(drugStock[0].quantity);
+                }
+            });
+        }
+    }, [drugId])
+
     const handleClick = event => {
         deleteMedicationOrder(id).then(json => console.log('deleted.'));
     }
+   
+    if (drugStock === null) {
+        return <span />
+    }
     
+    if (drugStock < quantity) {
+        return (
+            <span>Insufficient Stock</span>
+        )
+    }
+
     return (
         <Button variant="contained" color="secondary" onClick={handleClick}>disperse</Button>
     )

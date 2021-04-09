@@ -1,5 +1,7 @@
-import { SelectInput, Create, SimpleForm, TextInput, DateInput } from 'ra-ui-materialui';
 import * as React from 'react';
+import { Typography } from '@material-ui/core';
+import { SelectInput, Create, SimpleForm, TextInput, DateInput, NumberInput } from 'ra-ui-materialui';
+import { getClientToken } from '../Auth/auth-provider';
 import { FilteredSelect } from '../Helper/FilteredSelect';
 
 const patientFilter = json => json.map(obj => {
@@ -7,7 +9,7 @@ const patientFilter = json => json.map(obj => {
     const {id, firstname, lastname} = obj;
     return {
         id: id,
-        name: `id ${id}: ${firstname} ${lastname}`
+        name: `${firstname} ${lastname}`
     }
 })
 
@@ -16,7 +18,7 @@ const doctorFilter = json => {
         const {id, firstname, lastname, employeeType} = obj;
         return {
             id: id,
-            name: `id ${id}: ${firstname} ${lastname}`,
+            name: `${firstname} ${lastname}`,
             isDoctor: employeeType === 'doctor' ? true : false
         }
     });
@@ -24,8 +26,9 @@ const doctorFilter = json => {
 }
 
 const getAvailableStock = async () => {
-    const stock = await (await fetch('http://localhost:8080/ads/api/stock')).json()
-    const drugs = await (await fetch('http://localhost:8080/ads/api/drug')).json()
+    const headers = { Authorization: getClientToken() };
+    const stock = await (await fetch('http://localhost:8080/ads/api/stock', { headers })).json()
+    const drugs = await (await fetch('http://localhost:8080/ads/api/drug', { headers })).json()
 
     const stockDrugIds = stock.map(obj => obj.id);
     
@@ -48,12 +51,13 @@ export const MedicationOrderCreate = (props) => {
     return (
        <Create {...props}>
            <SimpleForm>
-               <FilteredSelect filter={patientFilter} optionText="name" source="patientId" url="http://localhost:8080/ads/api/patient" />
-               <FilteredSelect filter={doctorFilter} optionText="name" source="doctorId" url="http://localhost:8080/ads/api/employee" />
-               <SelectInput label="drug" source="drugId" choices={drugStock} />
-               <TextInput source="quantity" />
-               <DateInput source="creationDate" />
-               <DateInput source="expirationDate" />
+               <Typography variant="h5" style={{ marginBottom: 8, marginLeft: 4}}>Edit prescription</Typography>
+               <FilteredSelect variant="outlined" filter={patientFilter} optionText="name" source="patientId" url="http://localhost:8080/ads/api/patient" />
+               <FilteredSelect variant="outlined" filter={doctorFilter} optionText="name" source="doctorId" url="http://localhost:8080/ads/api/employee" />
+               <SelectInput variant="outlined" label="drug" source="drugId" choices={drugStock} />
+               <NumberInput variant="outlined" source="quantity" />
+               <DateInput variant="outlined" source="creationDate" />
+               <DateInput variant="outlined" source="expirationDate" />
            </SimpleForm>
        </Create>
     )

@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import { useAuthState } from 'react-admin';
 import { Datagrid, List, TextField, DateField, ReferenceField, NumberField} from 'ra-ui-materialui';
 import * as React from 'react';
 
@@ -15,7 +16,16 @@ const deleteMedicationOrder = async (id) => {
 }
 
 const getDrugStock = async (drugId) => {
-    const response = await fetch(`http://localhost:8080/ads/api/stock`);
+    const auth = localStorage.getItem("auth");
+    let token = ''
+    if (auth) {
+        token = JSON.parse(auth).token;
+    }
+    const response = await fetch(`http://localhost:8080/ads/api/stock`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`
+        })
+    });
     return await response.json();
 }
 
@@ -54,6 +64,9 @@ const FillOrderButton = ({ record }) => {
 }
 
 export const MedicationOrderList = (props) => {
+    const { authenticated } = useAuthState();
+    console.log('is auth');
+    console.log(authenticated);
     return (
         <List {...props} title="Prescriptions">
             <Datagrid rowClick="edit">

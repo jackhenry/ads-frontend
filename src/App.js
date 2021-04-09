@@ -15,12 +15,13 @@ import { StockEdit } from './Stock/StockEdit';
 import { MedicationOrderList } from './MedicationOrder/MedicationOrderList';
 import { MedicationOrderCreate } from './MedicationOrder/MedicationOrderCreate';
 import { wrappedDataProvider } from './providerWrapper';
+import { authProvider } from './Auth/auth-provider';
 
 // const dataProvider = jsonServerProvider('http://localhost:8080/ads/api');
 
 const App = () => {
   return (
-    <Admin dataProvider={wrappedDataProvider}>
+    <Admin authProvider={authProvider} dataProvider={wrappedDataProvider}>
       <Resource name="employee" list={EmployeeList} create={EmployeeCreate} edit={EmployeeEdit} />
       <Resource name="patient" list={PatientList} create={PatientCreate} edit={PatientEdit} />
       <Resource name="drug" list={DrugList} create={DrugCreate} />

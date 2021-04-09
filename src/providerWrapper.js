@@ -5,7 +5,6 @@ const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json'});
     }
-    localStorage.setItem('auth', JSON.stringify({ token: 'test'}));
     const authToken = localStorage.getItem('auth');
     if (authToken) {
         const { token } = JSON.parse(localStorage.getItem('auth'));

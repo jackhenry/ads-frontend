@@ -1,9 +1,22 @@
-import { HttpError } from 'ra-core';
+import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import englishMessages from 'ra-language-english';
 
+const httpClient = (url, options = {}) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json'});
+    }
+    localStorage.setItem('auth', JSON.stringify({ token: 'test'}));
+    const authToken = localStorage.getItem('auth');
+    if (authToken) {
+        const { token } = JSON.parse(localStorage.getItem('auth'));
+        options.headers.set('Authorization', `Bearer ${token}`);
+        console.log('auth token')
+        console.log(token);
+    }
+    return fetchUtils.fetchJson(url, options);
+}
 
-const dataProvider = jsonServerProvider('http://localhost:8080/ads/api');
+const dataProvider = jsonServerProvider('http://localhost:8080/ads/api', httpClient);
 
 export const wrappedDataProvider = {
     getList: (resource, params) => {
@@ -14,9 +27,6 @@ export const wrappedDataProvider = {
             dataProvider.getOne(resource, params).then(json => {
                 resolve(json);
             }).catch(error => {
-                console.log("ERROR");
-                console.log(Object.keys(error));
-                englishMessages.ra.notification.item_doesnt_exist = "CANNOT FIND";
                 reject(error);
             })
         })

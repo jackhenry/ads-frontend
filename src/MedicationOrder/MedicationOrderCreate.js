@@ -1,4 +1,4 @@
-import { SelectArrayInput, Create, SimpleForm, TextInput, DateInput } from 'ra-ui-materialui';
+import { SelectInput, Create, SimpleForm, TextInput, DateInput } from 'ra-ui-materialui';
 import * as React from 'react';
 import { FilteredSelect } from '../Helper/FilteredSelect';
 
@@ -50,7 +50,7 @@ export const MedicationOrderCreate = (props) => {
            <SimpleForm>
                <FilteredSelect filter={patientFilter} optionText="name" source="patientId" url="http://localhost:8080/ads/api/patient" />
                <FilteredSelect filter={doctorFilter} optionText="name" source="doctorId" url="http://localhost:8080/ads/api/employee" />
-               <SelectArrayInput label="drug" source="drugId" choices={drugStock} />
+               <SelectInput label="drug" source="drugId" choices={drugStock} />
                <TextInput source="quantity" />
                <DateInput source="creationDate" />
                <DateInput source="expirationDate" />

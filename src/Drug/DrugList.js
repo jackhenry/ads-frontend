@@ -4,11 +4,11 @@ import * as React from 'react';
 
 export const DrugList = (props) => {
     return (
-        <List {...props}>
+        <List {...props} title="Drugs">
             <Datagrid rowClick="edit">
-                <NumberField source="id" label="drug id" />
-                <TextField source="drugName" label="name" />
-                <TextField source="concentration" label="concentration" />
+                <NumberField source="id" label="ID" />
+                <TextField source="drugName" label="Name" />
+                <TextField source="concentration" label="Concentration" />
             </Datagrid>
         </List>
     );

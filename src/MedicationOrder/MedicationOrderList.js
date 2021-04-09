@@ -55,7 +55,7 @@ const FillOrderButton = ({ record }) => {
 
 export const MedicationOrderList = (props) => {
     return (
-        <List {...props}>
+        <List {...props} title="Prescriptions">
             <Datagrid rowClick="edit">
                 <ReferenceField label="Drug" source="drugId" reference="drug">
                     <TextField source="drugName" />

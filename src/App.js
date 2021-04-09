@@ -24,7 +24,7 @@ const App = () => {
       <Resource name="employee" list={EmployeeList} create={EmployeeCreate} edit={EmployeeEdit} />
       <Resource name="patient" list={PatientList} create={PatientCreate} edit={PatientEdit} />
       <Resource name="drug" list={DrugList} create={DrugCreate} />
-      <Resource name="stock" list={StockList} create={StockCreate} edit={StockEdit} options={{ label: 'StockItem', }} />
+      <Resource name="stock" list={StockList} create={StockCreate} edit={StockEdit} options={{ label: 'Stock', }} />
       <Resource name="mo" list={MedicationOrderList} create={MedicationOrderCreate} options={{ label: 'Prescription'}} />
     </Admin>
   )

@@ -6,14 +6,14 @@ const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'num
 
 export const PatientList = (props) => {
     return (
-        <List {...props}>
+        <List {...props} title="Patients">
             <Datagrid rowClick="edit">
-                <NumberField source="id" label="patient id" />
-                <TextField source="firstname" label="first name" />
-                <TextField source="lastname" label="last name" />
-                <NumberField source="phoneNumber" label="phone number" />
-                <DateField source="admitDate" options={dateOptions} label="admit date" />
-                <DateField source="dischargeDate" showTime options={dateOptions} label="discharge date" />
+                <NumberField source="id" label="ID" />
+                <TextField source="firstname" label="First Name" />
+                <TextField source="lastname" label="Last Name" />
+                <NumberField source="phoneNumber" label="Phone #" />
+                <DateField source="admitDate" options={dateOptions} label="Admitted" />
+                <DateField source="dischargeDate" showTime options={dateOptions} label="Discharged" />
             </Datagrid>
         </List>
     );

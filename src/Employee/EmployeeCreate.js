@@ -7,6 +7,7 @@ export const EmployeeCreate = (props) => (
        <SimpleForm>
            <TextInput source="firstname" />
            <TextInput source="lastname" />
+           <TextInput source="username" />
            <TextInput type="password" source="password" />
            <EmployeeTypeRadio />
        </SimpleForm>

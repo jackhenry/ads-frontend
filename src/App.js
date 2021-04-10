@@ -17,12 +17,11 @@ import { MedicationOrderCreate } from './MedicationOrder/MedicationOrderCreate';
 import { wrappedDataProvider } from './providerWrapper';
 import { authProvider } from './Auth/auth-provider';
 import { theme } from './global-theme';
-
-// const dataProvider = jsonServerProvider('http://localhost:8080/ads/api');
+import { AppLayout } from './Helper/AppLayout';
 
 const App = () => {
   return (
-    <Admin theme={theme} authProvider={authProvider} dataProvider={wrappedDataProvider}>
+    <Admin theme={theme} layout={AppLayout} authProvider={authProvider} dataProvider={wrappedDataProvider}>
       <Resource name="employee" list={EmployeeList} create={EmployeeCreate} edit={EmployeeEdit} />
       <Resource name="patient" list={PatientList} create={PatientCreate} edit={PatientEdit} />
       <Resource name="drug" list={DrugList} create={DrugCreate} />

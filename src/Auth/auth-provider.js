@@ -107,6 +107,15 @@ export const getClientToken = () => {
     } 
 }
 
+export const getClientAccountId = () => {
+    const auth = localStorage.getItem('auth');
+    try {
+        return JSON.parse(auth).accountId;
+    } catch (err) {
+        return null;
+    } 
+}
+
 export const getClientRole = () => {
     const permission = localStorage.getItem('role');
     try {

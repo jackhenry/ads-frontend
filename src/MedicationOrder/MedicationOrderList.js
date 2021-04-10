@@ -2,6 +2,7 @@ import { Button } from '@material-ui/core';
 import { useAuthState } from 'react-admin';
 import { Datagrid, List, TextField, DateField, ReferenceField, NumberField} from 'ra-ui-materialui';
 import * as React from 'react';
+import { AccountInfoContainer } from '../Auth/AccountInfoContainer';
 
 const deleteMedicationOrder = async (id) => {
     const response = await fetch(`http://localhost:8080/ads/api/mo/${id}`, {
@@ -68,22 +69,24 @@ export const MedicationOrderList = (props) => {
     console.log('is auth');
     console.log(authenticated);
     return (
-        <List {...props} title="Prescriptions">
-            <Datagrid rowClick="edit">
-                <ReferenceField label="Drug" source="drugId" reference="drug">
-                    <TextField source="drugName" />
-                </ReferenceField>
-                <ReferenceField label="Patient" source="patientId" reference="patient">
-                    <TextField source="fullname" label="patient first name" />
-                </ReferenceField>
-                <ReferenceField label="Doctor" source="doctorId" reference="employee">
-                    <TextField source="fullname" label="doctor name" />
-                </ReferenceField>
-                <NumberField source="quantity" />
-                <DateField showTime source="creationDate" />
-                <DateField showTime source="expirationDate" />
-                <FillOrderButton />
-            </Datagrid>
-        </List>
+        <AccountInfoContainer>
+            <List {...props} title="Prescriptions">
+                <Datagrid rowClick="edit">
+                    <ReferenceField label="Drug" source="drugId" reference="drug">
+                        <TextField source="drugName" />
+                    </ReferenceField>
+                    <ReferenceField label="Patient" source="patientId" reference="patient">
+                        <TextField source="fullname" label="patient first name" />
+                    </ReferenceField>
+                    <ReferenceField label="Doctor" source="doctorId" reference="employee">
+                        <TextField source="fullname" label="doctor name" />
+                    </ReferenceField>
+                    <NumberField source="quantity" />
+                    <DateField showTime source="creationDate" />
+                    <DateField showTime source="expirationDate" />
+                    <FillOrderButton />
+                </Datagrid>
+            </List>
+        </AccountInfoContainer>
     );
 }

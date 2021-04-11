@@ -10,7 +10,7 @@ export const FilteredSelect = (props) => {
     useEffect(() => {
         const fetchData = async (url) => {
            const token = getClientToken();
-           const response = await fetch(url, {
+           const response = await fetch(url  + "?_start=0&_end=10000", {
                headers: new Headers({
                    Authorization: `Bearer ${token}`
                })

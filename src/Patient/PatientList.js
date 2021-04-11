@@ -12,7 +12,7 @@ export const PatientList = (props) => {
                     <NumberField source="id" label="ID" />
                     <TextField source="firstname" label="First Name" />
                     <TextField source="lastname" label="Last Name" />
-                    <NumberField source="phoneNumber" label="Phone #" />
+                    <NumberField source="phoneNumber" label="Phone #" sortable={false} />
                     <DateField source="admitDate" options={dateOptions} label="Admitted" />
                     <DateField source="dischargeDate" showTime options={dateOptions} label="Discharged" />
                 </Datagrid>

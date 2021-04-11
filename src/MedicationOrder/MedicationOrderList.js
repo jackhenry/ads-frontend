@@ -1,15 +1,18 @@
-import { Button } from '@material-ui/core';
+import { Button, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useAuthState } from 'react-admin';
 import { Datagrid, List, TextField, DateField, ReferenceField, NumberField} from 'ra-ui-materialui';
 import * as React from 'react';
 import { AccountInfoContainer } from '../Auth/AccountInfoContainer';
+import { getClientToken } from '../Auth/auth-provider';
+import { serverHostname } from '../env';
 
-const deleteMedicationOrder = async (id) => {
-    const response = await fetch(`http://localhost:8080/ads/api/mo/${id}`, {
-        method: 'DELETE',
+const deleteMedicationOrder = async (id, token) => {
+    const response = await fetch(`${serverHostname()}/mo/${id}/disperse`, {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     });
     
@@ -22,7 +25,7 @@ const getDrugStock = async (drugId) => {
     if (auth) {
         token = JSON.parse(auth).token;
     }
-    const response = await fetch(`http://localhost:8080/ads/api/stock`, {
+    const response = await fetch(`${serverHostname()}/stock`, {
         headers: new Headers({
             Authorization: `Bearer ${token}`
         })
@@ -30,10 +33,19 @@ const getDrugStock = async (drugId) => {
     return await response.json();
 }
 
-const FillOrderButton = ({ record }) => {
+const FillOrderButton = ({ permissions, record }) => {
     const { id, drugId, quantity } = record;
+
+    const useStyles = makeStyles(({palette}) => ({
+        error: {
+            color: palette.error.main
+        }
+    }));
+
+    const classes = useStyles();
    
     const [drugStock, setDrugStock] = React.useState(null);
+    const token = getClientToken();
     React.useEffect(() => {
         if (drugId) {
             getDrugStock(drugId).then(json => {
@@ -46,7 +58,7 @@ const FillOrderButton = ({ record }) => {
     }, [drugId])
 
     const handleClick = event => {
-        deleteMedicationOrder(id).then(json => console.log('deleted.'));
+        deleteMedicationOrder(id, token).then(json => window.location.reload());
     }
    
     if (drugStock === null) {
@@ -55,7 +67,13 @@ const FillOrderButton = ({ record }) => {
     
     if (drugStock < quantity) {
         return (
-            <span>Insufficient Stock</span>
+            <Typography variant="subtitle2" className={classes.error}>Insufficient Stock</Typography>
+        )
+    }
+    
+    if (permissions === 'pharmatech') {
+        return (
+            <Typography variant="subtitle2" className={classes.error}>Pharma techs cannot disperse</Typography>
         )
     }
 
@@ -64,10 +82,8 @@ const FillOrderButton = ({ record }) => {
     )
 }
 
-export const MedicationOrderList = (props) => {
+export const MedicationOrderList = ({ permissions, ...props}) => {
     const { authenticated } = useAuthState();
-    console.log('is auth');
-    console.log(authenticated);
     return (
         <AccountInfoContainer>
             <List {...props} title="Prescriptions">
@@ -84,7 +100,7 @@ export const MedicationOrderList = (props) => {
                     <NumberField source="quantity" />
                     <DateField showTime source="creationDate" />
                     <DateField showTime source="expirationDate" />
-                    <FillOrderButton />
+                    <FillOrderButton permissions={permissions} />
                 </Datagrid>
             </List>
         </AccountInfoContainer>

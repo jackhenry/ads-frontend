@@ -3,6 +3,8 @@ import { Typography } from '@material-ui/core';
 import { SelectInput, Create, SimpleForm, TextInput, DateInput, NumberInput } from 'ra-ui-materialui';
 import { getClientToken } from '../Auth/auth-provider';
 import { FilteredSelect } from '../Helper/FilteredSelect';
+import { InsufficientPermission } from '../Error/InsufficientPermission';
+import { serverHostname } from '../env';
 
 const patientFilter = json => json.map(obj => {
     console.log(obj);
@@ -27,15 +29,15 @@ const doctorFilter = json => {
 
 const getAvailableStock = async () => {
     const headers = { Authorization: getClientToken() };
-    const stock = await (await fetch('http://localhost:8080/ads/api/stock', { headers })).json()
-    const drugs = await (await fetch('http://localhost:8080/ads/api/drug', { headers })).json()
+    const stock = await (await fetch(`${serverHostname()}/stock`, { headers })).json()
+    const drugs = await (await fetch(`${serverHostname()}/drug`, { headers })).json()
 
     const stockDrugIds = stock.map(obj => obj.id);
     
     return drugs.filter(obj => stockDrugIds.includes(obj.id));
 }
 
-export const MedicationOrderCreate = (props) => {
+export const MedicationOrderCreate = ({permissions, ...props}) => {
 
     const [drugStock, setDrugStock] = React.useState([]);
     React.useEffect(() => {
@@ -47,13 +49,17 @@ export const MedicationOrderCreate = (props) => {
             setDrugStock(choices);
         })
     }, []);
+    
+    if (permissions !== 'doctor') {
+        return <InsufficientPermission role="doctor" resourceName="Create Prescription" />
+    }
 
     return (
        <Create {...props}>
            <SimpleForm>
                <Typography variant="h5" style={{ marginBottom: 8, marginLeft: 4}}>Edit prescription</Typography>
-               <FilteredSelect variant="outlined" filter={patientFilter} optionText="name" source="patientId" url="http://localhost:8080/ads/api/patient" />
-               <FilteredSelect variant="outlined" filter={doctorFilter} optionText="name" source="doctorId" url="http://localhost:8080/ads/api/employee" />
+               <FilteredSelect variant="outlined" filter={patientFilter} optionText="name" source="patientId" url={`${serverHostname()}/patient`} />
+               <FilteredSelect variant="outlined" filter={doctorFilter} optionText="name" source="doctorId" url={`${serverHostname()}/employee`} />
                <SelectInput variant="outlined" label="drug" source="drugId" choices={drugStock} />
                <NumberInput variant="outlined" source="quantity" />
                <DateInput variant="outlined" source="creationDate" />

@@ -1,11 +1,12 @@
 import { makeStyles, Typography } from '@material-ui/core';
 import { useAuthState } from 'ra-core';
 import { React, useEffect, useState } from 'react';
+import { serverHostname } from '../env';
 import { getClientAccountId, getClientRole, getClientToken } from './auth-provider';
 
 
 const getAccount = async (accountId, token) => {
-    const request = new Request(`http://localhost:8080/ads/api/auth/user/${accountId}`, {
+    const request = new Request(`${serverHostname()}/auth/user/${accountId}`, {
         headers: new Headers({
             'Authorization': `Bearer ${token}`
         }) 
@@ -50,10 +51,11 @@ export const AccountInfoContainer = (props) => {
     const role = getClientRole();
 
     useEffect(() => {
+        let isMounted = true;
         if (authenticated) {
             const token = getClientToken();
             const accountId = getClientAccountId();
-            if (token && accountId) {
+            if (isMounted && token && accountId) {
                 getAccount(accountId, token).then(json => {
                     if (json) {
                         setUsername(json.username);
@@ -61,6 +63,7 @@ export const AccountInfoContainer = (props) => {
                 })
             }
         }
+        return () => { isMounted = false }
     }, [authenticated])
 
     if (!username) {

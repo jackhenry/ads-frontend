@@ -2,6 +2,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 import { Toolbar } from 'react-admin'
 import { Create, SaveButton, SimpleForm, TextInput } from 'ra-ui-materialui';
 import * as React from 'react';
+import { InsufficientPermission } from '../Error/InsufficientPermission';
 
 const CommitToolbar = props => {
     
@@ -23,13 +24,20 @@ const CommitToolbar = props => {
     )
 }
 
-export const PatientCreate = (props) => (
-   <Create {...props}>
-       <SimpleForm toolbar={<CommitToolbar />}>
-           <Typography variant="h5" style={{ marginBottom: 8, marginLeft: 4}}>Enter patient info</Typography>
-           <TextInput source="firstname" variant="outlined" />
-           <TextInput source="lastname" variant="outlined" />
-           <TextInput source="phoneNumber" variant="outlined" />
-       </SimpleForm>
-   </Create> 
-)
+export const PatientCreate = ({permissions, ...props}) => {
+    
+    if (permissions !== 'nurse') {
+        return <InsufficientPermission role="nurse" resourceName="Patient Create" />
+    }
+
+    return (
+        <Create {...props}>
+            <SimpleForm toolbar={<CommitToolbar />}>
+                <Typography variant="h5" style={{ marginBottom: 8, marginLeft: 4}}>Enter patient info</Typography>
+                <TextInput source="firstname" variant="outlined" />
+                <TextInput source="lastname" variant="outlined" />
+                <TextInput source="phoneNumber" variant="outlined" />
+            </SimpleForm>
+        </Create> 
+    )
+}

@@ -3,9 +3,10 @@ import { AppBar } from 'ra-ui-materialui';
 import { useAuthState } from 'react-admin';
 import { React, useEffect, useState } from 'react';
 import { getClientToken, getClientAccountId, getClientRole } from '../Auth/auth-provider';
+import { serverHostname } from '../env';
 
 const getAccount = async (accountId, token) => {
-    const request = new Request(`http://localhost:8080/ads/api/auth/user/${accountId}`, {
+    const request = new Request(`${serverHostname()}/auth/user/${accountId}`, {
         headers: new Headers({
             'Authorization': `Bearer ${token}`
         }) 

@@ -1,9 +1,10 @@
+import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import {
   DateField, Edit, SimpleForm, TextInput, TopToolbar,
 } from 'ra-ui-materialui';
-import { showNotification } from 'react-admin';
-import * as React from 'react';
+import { InsufficientPermission } from '../Error/InsufficientPermission';
+import { serverHostname } from '../env';
 
 
 
@@ -25,12 +26,15 @@ const PatientEditActions = (props) => {
 
 const redirect = (basePath, id, data) => `/patient/${id}/show`;
 
-export const PatientEdit = (props) => {
+export const PatientEdit = ({ permissions, ...props }) => {
   
   const [isDischarged, setIsDischarged] = React.useState(false);
+  if (permissions !== 'nurse') {
+      return <InsufficientPermission role='nurse' resourceName='Patient Edit'/>
+  }
   
   const sendDischargeRequest = async id => {
-    fetch(`http://localhost:8080/ads/api/patient/${id}/discharge`, {
+    fetch(`${serverHostname()}/patient/${id}/discharge`, {
       method: 'PUT'
     })
     .then(response => {

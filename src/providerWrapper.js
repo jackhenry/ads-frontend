@@ -1,5 +1,6 @@
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
+import { serverHostname } from './env';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -15,7 +16,7 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 }
 
-const dataProvider = jsonServerProvider('http://localhost:8080/ads/api', httpClient);
+const dataProvider = jsonServerProvider(serverHostname(), httpClient);
 
 export const wrappedDataProvider = {
     getList: (resource, params) => {

@@ -1,11 +1,14 @@
 import { required } from 'ra-core';
-import { useNotify } from 'react-admin';
 import { Edit, SimpleForm, TextInput } from 'ra-ui-materialui';
 import * as React from 'react';
 import { EmployeeTypeRadio } from './EmployeeTypeRadio';
+import { InsufficientPermission } from '../Error/InsufficientPermission';
 
-export const EmployeeEdit = (props) => {
-    const notify = useNotify();
+export const EmployeeEdit = ({ permissions, ...props }) => {
+
+    if (permissions !== 'pharmatech') {
+        return <InsufficientPermission role='pharmatech' resourceName='Employee Edit'/>
+    }
     
     return (
         <Edit onFailure={() => console.log("FUCK YOU")} {...props}>

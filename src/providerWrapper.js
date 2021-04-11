@@ -10,8 +10,6 @@ const httpClient = (url, options = {}) => {
     if (authToken) {
         const { token } = JSON.parse(localStorage.getItem('auth'));
         options.headers.set('Authorization', `Bearer ${token}`);
-        console.log('auth token')
-        console.log(token);
     }
     return fetchUtils.fetchJson(url, options);
 }

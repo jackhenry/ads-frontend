@@ -1,7 +1,6 @@
 import { serverHostname } from "../env";
 
 const login = ({ username, password })=> {
-    console.log('logging in');
     const request = new Request(`${serverHostname()}/auth/login`, {
         method: 'POST',
         body: JSON.stringify({ username, password }),
@@ -19,8 +18,6 @@ const login = ({ username, password })=> {
             return response.json();
         })
         .then(auth => {
-            console.log("Setting new token");
-            console.log(auth);
             localStorage.setItem('auth', JSON.stringify(auth));
         })
         .catch(error => {
@@ -79,7 +76,6 @@ const getPermissions = params => {
                 return response.json();
             })
             .then(json => {
-                console.log('Setting permissions');
                 localStorage.setItem('role', JSON.stringify(json));
                 Promise.resolve(json.role);
             })

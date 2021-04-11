@@ -21,8 +21,6 @@ export const StockCreate = ({ permissions, ...props}) => {
     }
     
     const handleFailure = error => {
-        console.log('error');
-        console.log(error);
         notify('Drug is already in stock. Please update existing stock.');
     }
 

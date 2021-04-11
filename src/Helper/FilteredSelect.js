@@ -19,7 +19,6 @@ export const FilteredSelect = (props) => {
         }
         
         fetchData(url).then(json => {
-            console.log(json);
             setChoices(filter(json))
         });
     }, [filter, url]);

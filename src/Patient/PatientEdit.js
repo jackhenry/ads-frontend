@@ -40,11 +40,10 @@ export const PatientEdit = ({ permissions, ...props }) => {
     .then(response => {
       setIsDischarged(true);
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
   }
   
   if (isDischarged) {
-    console.log(props);
     return (
       <Dialog open={true}>
         <DialogTitle>Successful Discharge</DialogTitle>

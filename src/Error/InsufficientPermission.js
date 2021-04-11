@@ -1,13 +1,11 @@
+import * as React from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Block } from '@material-ui/icons';
-import { React, useEffect, useState } from 'react';
-import { AccountInfoContainer } from '../Auth/AccountInfoContainer';
 
 export const InsufficientPermission = ({resourceName, role, ...props}) => {
     
     const useStyles = makeStyles(props => {
         const { palette } = props;
-        console.log(props);
         return {
             wrapper: {
                 display: 'flex',

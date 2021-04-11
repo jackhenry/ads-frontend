@@ -1,9 +1,10 @@
 import { Button, makeStyles, Tooltip, Typography } from '@material-ui/core';
 import { useAuthState } from 'react-admin';
-import { Datagrid, List, TextField, DateField, ReferenceField, NumberField} from 'ra-ui-materialui';
+import { Datagrid, List, TextField, DateField, ReferenceField, NumberField } from 'ra-ui-materialui';
 import * as React from 'react';
 import { AccountInfoContainer } from '../Auth/AccountInfoContainer';
 import { getClientToken } from '../Auth/auth-provider';
+import { ListActions } from '../Helper/ListActions';
 import { serverHostname } from '../env';
 
 const deleteMedicationOrder = async (id, token) => {
@@ -83,10 +84,9 @@ const FillOrderButton = ({ permissions, record }) => {
 }
 
 export const MedicationOrderList = ({ permissions, ...props}) => {
-    const { authenticated } = useAuthState();
     return (
         <AccountInfoContainer>
-            <List {...props} title="Prescriptions">
+            <List {...props} title="Prescriptions" bulkActionButtons={<ListActions permissions={permissions} required="doctor" />}>
                 <Datagrid rowClick="edit">
                     <ReferenceField label="Drug" source="drugId" reference="drug">
                         <TextField source="drugName" />
@@ -98,8 +98,8 @@ export const MedicationOrderList = ({ permissions, ...props}) => {
                         <TextField source="fullname" label="doctor name" />
                     </ReferenceField>
                     <NumberField source="quantity" />
-                    <DateField showTime source="creationDate" />
-                    <DateField showTime source="expirationDate" />
+                    <DateField source="creationDate" />
+                    <DateField source="expirationDate" />
                     <FillOrderButton permissions={permissions} />
                 </Datagrid>
             </List>

@@ -1,6 +1,6 @@
+import * as React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 import { useAuthState } from 'ra-core';
-import { React, useEffect, useState } from 'react';
 import { serverHostname } from '../env';
 import { getClientAccountId, getClientRole, getClientToken } from './auth-provider';
 
@@ -46,11 +46,11 @@ export const AccountInfoContainer = (props) => {
     
     const classes = useStyles();
     
-    const [username, setUsername] = useState();
+    const [username, setUsername] = React.useState();
     const {authenticated } = useAuthState();
     const role = getClientRole();
 
-    useEffect(() => {
+    React.useEffect(() => {
         let isMounted = true;
         if (authenticated) {
             const token = getClientToken();

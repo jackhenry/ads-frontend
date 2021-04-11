@@ -1,7 +1,7 @@
+import * as React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 import { AppBar } from 'ra-ui-materialui';
 import { useAuthState } from 'react-admin';
-import { React, useEffect, useState } from 'react';
 import { getClientToken, getClientAccountId, getClientRole } from '../Auth/auth-provider';
 import { serverHostname } from '../env';
 
@@ -32,24 +32,6 @@ export const CustomAppBar = props => {
     
     const classes = useStyles();
     
-    const [username, setUsername] = useState();
-    const {authenticated } = useAuthState();
-    const role = getClientRole();
-
-    useEffect(() => {
-        if (authenticated) {
-            const token = getClientToken();
-            const accountId = getClientAccountId();
-            if (token && accountId) {
-                getAccount(accountId, token).then(json => {
-                    if (json) {
-                        setUsername(json.username);
-                    }
-                })
-            }
-        }
-    }, [authenticated])
-
     return (
         <AppBar {...props}>
             <Typography variant="h6">Automatic Dispensing System</Typography>

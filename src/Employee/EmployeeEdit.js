@@ -11,7 +11,7 @@ export const EmployeeEdit = ({ permissions, ...props }) => {
     }
     
     return (
-        <Edit onFailure={() => console.log("FUCK YOU")} {...props}>
+        <Edit {...props}>
             <SimpleForm variant="filled">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="firstname" validate={required()} />

@@ -1,12 +1,13 @@
 import { Datagrid, List, NumberField, DateField, ReferenceField, TextField } from 'ra-ui-materialui';
 import * as React from 'react';
 import { AccountInfoContainer } from '../Auth/AccountInfoContainer';
+import { ListActions } from '../Helper/ListActions';
 
 
-export const StockList = (props) => {
+export const StockList = ({ permissions, ...props }) => {
     return (
         <AccountInfoContainer>
-            <List {...props} title="Stock">
+            <List {...props} title="Stock" bulkActionButtons={<ListActions permissions={permissions} required="pharmatech" />}>
                 <Datagrid rowClick="edit">
                     <NumberField source="id" label="ID" />
                     <ReferenceField source="id" label="Name" reference="drug">

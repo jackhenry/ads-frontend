@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Typography } from '@material-ui/core';
-import { SelectInput, Create, SimpleForm, TextInput, DateInput, NumberInput } from 'ra-ui-materialui';
+import { SelectInput, Create, SimpleForm, DateInput, NumberInput } from 'ra-ui-materialui';
 import { getClientToken } from '../Auth/auth-provider';
 import { FilteredSelect } from '../Helper/FilteredSelect';
 import { InsufficientPermission } from '../Error/InsufficientPermission';
 import { serverHostname } from '../env';
 
 const patientFilter = json => json.map(obj => {
-    console.log(obj);
     const {id, firstname, lastname} = obj;
     return {
         id: id,
